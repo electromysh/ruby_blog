@@ -14,6 +14,8 @@ class ArticlesController < ApplicationController
   end
 
   def create
+    p "params"
+    p params
     @article = Article.new(article_params)
 
     if @article.save
