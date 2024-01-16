@@ -9,6 +9,11 @@
     <%= comment.body %>
   </p>
 
+    <p>
+    <strong>Comment:</strong>
+    <%= comment.created_at.strftime(("%d-%m-%y")) %>
+  </p>
+
   <p>
     <%= link_to "Destroy Comment", [comment.article, comment], data: {
                   turbo_method: :delete,
