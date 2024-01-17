@@ -10,77 +10,105 @@ RSpec.describe "Articles", type: :request do
     @article = @articles.first
   end
 
-  # describe "GET index" do
-  #   it "succeeds" do
-  #     get root_path # get "/articles/"
+  describe "GET articles#index" do
+    it "should be successful" do
+      get root_path
 
-  #     expect(response).to be_successful
-  #     expect(response).to have_http_status(200)
-  #   end
-  # end
+      expect(response).to be_successful
+      expect(response).to have_http_status(200)
+    end
+  end
 
-  # describe "GET show" do
-  #   it "succeeds" do 
-  #     get articles_path(@article.id) # get "/articles/#{@article.id}"
+  describe "GET articles#show" do
+    it "should be successful" do 
+      get articles_path(@article.id)
       
-  #     expect(response).to be_successful
-  #     expect(response).to have_http_status(200)
-  #   end
-  # end
+      expect(response).to be_successful
+      expect(response).to have_http_status(200)
+    end
+  end
 
-  # describe "POST create" do
-  #   it 'create article with valid attributes' do
-  #     article_params = { article: {
-  #       title: 'NEW NEW NEW',
-  #       body: 'This is new article!',
-  #       status: 'public'
-  #     }}
-  #     post '/articles/', params: article_params
-  #     expect(response).to have_http_status(302)
-  #   end
+  describe "POST articles#create" do
+    it "should create the article" do
+      article_params = { article: {
+        title: "Rick and Morty",
+        body: "Lets get shifty!",
+        status: "public"
+      }}
+      
+      expect{
+        post  articles_path, params: article_params     
+      }.to change(Article,:count).by(1)
+    end
 
-  #   # fill_in "article_title", with: "Ruby on Rails"
-  #   # fill_in "article_body", with: "Text about Ruby on Rails"
-  #   # fill_in "article_status", with: "public"
-  #   # expect { click_button "Save" }.to change(Article, :count).by(1)
-  # end
+    it "should create the article with correct attributes" do
+      article_params  = { article: {
+        title: "Rick and Morty",
+        body: "Lets get shifty!",
+        status: "public"
+      }}
 
-  # describe "PUT edit" do
-  #   it "PUT edit" do
-  #     new_article_params = { article: {
-  #             title: 'Rick and Morty',
-  #             body: 'Lets get shifty!',
-  #             status: "public"
-  #           }}
-  #     patch article_path(@article), :params => new_article_params.to_json, :headers => { "Content-Type": "application/json" }
+      post  articles_path, params: article_params  
+      expect(Article.last).to have_attributes article_params[:article]
+    end
 
-  #     expect(response).to have_http_status(302)
+    it "should redirect to the new article" do
+      article_params = { article: {
+        title: "NEW NEW NEW",
+        body: "This is new article!",
+        status: "public"
+      }}
 
-  #   end
-  # end
+      post '/articles/', params: article_params
+      expect(response).to have_http_status(302)
+      expect(response).to redirect_to Article.last
+    end
+  end
 
-  # describe 'PATCH update' do
-  #   it 'should update the title' do
-  #     article = Article.create(title: "First article", body: "This is the first article", status: "public")
-  #     new_article_params = { article: {
-  #       title: 'Rick and Morty',
-  #       body: 'Lets get shifty!',
-  #       status: "public"
-  #     }}
-  #     patch article_path(article), :params => new_article_params
-  #     expect(response).to be_redirect
-  #   end
-  #   # expect(@article.reload.title).to eq("another one NEW title")
-  #   # expect(response).to be_redirect
-  # end
+  describe "PATCH articles#update" do
+    it "should redirect to updated article" do 
+      new_article_params = { article: {
+        title: "Rick and Morty",
+        body: "Lets get shifty!",
+        status: "public"
+      }}
 
-  # describe "DELETE destroy" do
-  #   it "succeeds" do
-  #     article = Article.create(title: "First article", body: "This is the first article", status: "public")
-  #     delete  article_path(article)
+      patch article_path(@article), params: new_article_params
+      expect(response).to have_http_status(302)
+      expect(response).to redirect_to @article
+    end
 
-  #     expect(response).to have_http_status(:see_other)
-  #     expect(response).to be_redirect
-  #   end
-  # end
+    it "should update the article with correct attributes" do
+      new_article_params = { article: {
+        title: "Rick and Morty",
+        body: "Lets get shifty!",
+        status: "public"
+      }}
+      
+      patch article_path(@article), params: new_article_params
+      expect(@article.reload).to have_attributes new_article_params[:article]
+    end
+  end
+
+  describe "DELETE articles#destroy" do
+    it "should redirect to articles list" do
+      delete  article_path(@article)
+
+      expect(response).to have_http_status(:see_other)
+      expect(response).to redirect_to root_path
+    end
+
+    it "should delete the article" do
+      expect{
+        delete  article_path(@article)     
+      }.to change(Article, :count).by(-1)
+    end
+
+    it "should delete correct article" do
+      delete  article_path(@article)
+      expect{
+        get  article_path(@article[:id]) 
+      }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
 end
