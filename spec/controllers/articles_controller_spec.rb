@@ -1,7 +1,14 @@
 require "rails_helper"
+# require 'rspec/expectations'
+require "spec_helper"
+require 'devise'
 
 RSpec.describe "Articles", type: :request do
   before(:each) do
+    # @user = User.create(email: "example@example.com", password: "000000")
+    # sign_in @user
+    # authenticate_user!
+
     @articles =  [
       Article.create(title: "First article", body: "This is the first article", status: "public"), 
       Article.create(title: "Second article", body: "This is the second article", status: "public"),

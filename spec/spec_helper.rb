@@ -14,8 +14,12 @@
 #
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
+# require 'rspec/rails'
+require 'selenium-webdriver'
+require 'rspec/expectations'
 require 'capybara/rspec'
 require 'selenium-webdriver'
+require 'devise'
 
 Capybara.register_driver :selenium do |app|
   Capybara::Selenium::Driver.new(app, browser: :firefox) # browser: :chrome)
@@ -26,6 +30,12 @@ Capybara.configure do |config|
 end
 
 RSpec.configure do |config|
+  # config.include ApplicationHelper
+  # config.include ControllersHelper
+  # config.include UsersHelper
+  # config.include Devise::TestHelpers, type: :controller
+  config.include Devise
+
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.

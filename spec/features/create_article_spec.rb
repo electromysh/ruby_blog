@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Creating an article', type: :feature do
+  # user_sign_in
   scenario 'valid inputs' do
     visit new_article_path
     fill_in 'Title', with: 'New Article Title'
