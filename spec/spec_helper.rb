@@ -18,7 +18,6 @@
 require 'selenium-webdriver'
 require 'rspec/expectations'
 require 'capybara/rspec'
-require 'selenium-webdriver'
 require 'devise'
 
 Capybara.register_driver :selenium do |app|

@@ -1,13 +1,20 @@
 require "rails_helper"
-# require 'rspec/expectations'
+require 'rspec/expectations'
 require "spec_helper"
 require 'devise'
 
 RSpec.describe "Articles", type: :request do
   before(:each) do
-    # @user = User.create(email: "example@example.com", password: "000000")
-    # sign_in @user
-    # authenticate_user!
+    # @user = User.create!(email: "example@example.com", password: "000000") # current_user
+    # # patch article_path(@article), params: new_article_params
+    # user_params  = { user: {
+    #   email: "example@example.com",
+    #   password: "000000",
+    #   remember_me: "0"
+    # }}
+
+    # post 'localhost:3000/articles/sign_up'(@user), params: user_params
+    # sign_in(:user, @user)  
 
     @articles =  [
       Article.create(title: "First article", body: "This is the first article", status: "public"), 
